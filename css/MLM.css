@@ -1,0 +1,69 @@
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.axis text {
+	font-family: sans-serif;
+	font-size: 11px;
+}	
+
+
+/* BODY */
+
+.wrapper {
+    max-width: 900px;
+    margin: auto;
+}
+
+div.wrapper label {
+    margin: 10px 10px;
+    padding: 10px 10px;
+}
+
+div.slider {
+    padding-bottom: 10px;
+}
+
+div#thickness {
+    display: inline-block;
+    margin: 0;
+}
+
+/* line */
+
+path { 
+    stroke-width: 2;
+    fill: none;
+}
+.svg-holder-simple {
+  width: 100%;
+}
+
+text.label {
+    font-size: 1.2em;
+}
+
+/* TABLE */
+
+.tg tr {
+    cursor:pointer;
+}
+.tg tr.highlight td {
+    background-color: rgb(191,255,110);
+}
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+
+/*  TOOLS  */
+
+div.tools {
+    margin: 15px 0px;
+}
+
+div.tools a {
+    margin-right: 15px;
+}
