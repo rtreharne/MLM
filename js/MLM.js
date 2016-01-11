@@ -1,12 +1,13 @@
 window.location.href = "#";
 //Instantiate
-      // var masterMap = [['OW.csv', 'ZnO.csv', 'ITO.csv', 'ZnO.csv', 'ITO.csv'], [NaN, 100, 100, 100, 100]];
-    var masterMap = [['OptiWhite.csv', 'ITO.csv'],[NaN, 200]];
-//        var masterMap = [['OW.csv', 'ITO.csv', 'ZnO.csv'],[NaN, 100, 100]];
+    //var masterMap = [['quartz.csv', 'ITO.csv'],[NaN, 200]];
+    //var masterMap = [['quartz.csv', 'const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv'],[NaN, 95, 95,95, 95,95, 95,95, 95,95, 95]]; //10 layers
+    //var masterMap = [['quartz.csv', 'const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv'],[NaN, 95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95]]; //20 layers
+    var masterMap = [['quartz.csv', 'const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv','const_n__1_67.csv', 'PMMA.csv'],[NaN, 95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95,95, 95]]; //40 layers
 
-    //var masterMap = [['OptiWhite.csv', 'SiO2.csv', 'ITO.csv', 'ZnO.csv', 'CdS.csv', 'CdTe.csv'],[NaN, 10, 500, 100, 100, 2000]];
 
 	var flag = -1;
+    var angle = 0;
 	var masterData = [];
 	var masterMatrix = [];
 	var testMatrix = [];
@@ -39,6 +40,7 @@ window.location.href = "#";
 		    plotData = calcTR(masterData, matrixMult(Matrix));
 		    plot(plotData);
 		    updateTable(masterMap);
+            updateAngle();
 		    _(selectedFilm).className = "highlight";
 		    flag = -1 //!important that this is reset
                     plotData = [];
@@ -60,10 +62,14 @@ window.location.href = "#";
 
         function matrixElem(d, data) {
 	   //Calculate matrix elements for a single film
+
+       //convert angle to radians
+       radangle = angle*Math.PI/180
+       console.log(math.cos(radangle))
 	   
 	   //define film phase
 	   var deltaA = math.dotDivide(data[1], data[0]);
-	   var delta = math.multiply(deltaA, 2*Math.PI*d);
+	   var delta = math.multiply(deltaA, 2*Math.PI*d*math.cos(radangle));
 	   
 	   //Define Admittance of film
 	   var filmA = math.multiply(data[1],airA);
@@ -139,6 +145,12 @@ window.location.href = "#";
 
 	}
     
+    function updateSliders(filmID) {;
+        var slider1 = _("sliderLabel")
+        slider1.innerHTML = '<h3> Layer '+filmID+' thickness ('+masterMap[1][filmID]+' nm)</h3>';
+
+    }
+
     function updateTable(Map) {
         var table = _('filmTable');
 		var output = '<tr><th class="tg-031e">#</th><th class="tg-031e">Material</th><th class="tg-031e">Thickness (nm)</th>';
@@ -149,6 +161,7 @@ window.location.href = "#";
 	}
 
         inst(masterMap);
+
 
         function plot(dataset) {
 	    T = dataset[0];
@@ -244,9 +257,9 @@ window.location.href = "#";
 	       .text("T, R");
 
             }
-         
+
          function updateSlider(filmID) {
-			 _("sliderLabel").innerHTML = '<h3> Layer '+filmID+' thickness (nm)</h3>';
+			 _("sliderLabel").innerHTML = '<h3> Layer '+filmID+' thickness ('+masterMap[1][filmID]+' nm)</h3>';
 			 _("slider1").innerHTML = "";
 			 if (filmID > 0) {
 			 var sdr = d3.select('#slider1')
@@ -254,15 +267,34 @@ window.location.href = "#";
 					 masterMap[1][filmID] = value;
 					 updatePlot(masterMap, masterData);
 					 updateTable(masterMap);
+                     updateSliders(filmID);
 					 _(filmID).className = 'highlight';
 				 })
 						 .axis(true)
 						 .value(masterMap[1][filmID])
 						 .min(0)
-						 .max(2000)
+						 .max(200)
 						 .step(1)
 					 );
 			 }
+		 }
+         
+         function updateAngle() {
+			 _("sliderAngleLabel").innerHTML = '<h3> Angle ('+angle+' deg)</h3>';
+			 _("sliderAngle").innerHTML = '';
+			 var sdr = d3.select('#sliderAngle')
+				 .call(d3.slider().on("slide", function(evt, value) {
+                     angle = value;
+                     //console.log(angle);
+					 updatePlot(masterMap, masterData);
+				 })
+						 .axis(true)
+						 .value(0)
+						 .min(0)
+						 .max(90)
+						 .step(1)
+					 );
+			 
 		 }
 
          function addFilm() {
@@ -348,5 +380,48 @@ window.location.href = "#";
 		updateSlider(selectedFilm);
 
 	    }
+
+        function downloadT() {
+		    Matrix = createMatrix(masterMap, masterData); 
+		    plotData = calcTR(masterData, matrixMult(Matrix));
+            dataT = plotData[0];
+            csvContent = "data:text/csv;charset=utf-8,";
+            dataT.forEach(function(infoArray, index){
+
+               dataString = infoArray.join(",");
+               csvContent += index < dataT.length ? dataString+ "\n" : dataString;
+
+            }); 
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "T.csv");
+            document.body.appendChild(link);
+
+            link.click();
+            return plotData[0]
+        }
+
+        function downloadR() {
+		    Matrix = createMatrix(masterMap, masterData); 
+		    plotData = calcTR(masterData, matrixMult(Matrix));
+            dataR = plotData[1];
+            csvContent = "data:text/csv;charset=utf-8,";
+            dataR.forEach(function(infoArray, index){
+
+               dataString = infoArray.join(",");
+               csvContent += index < dataR.length ? dataString+ "\n" : dataString;
+
+            }); 
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "R.csv");
+            document.body.appendChild(link);
+
+            link.click();
+            return plotData[0]
+        }
+
 
 

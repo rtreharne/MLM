@@ -23,14 +23,35 @@ $filesSorted = sort($files);
         <div class="wrapper">
            <h1>MLM</h1>
 		   <p>Build a <strong>m</strong>ulti-<strong>l</strong>ayer <strong>m</strong>odel to determine the transmittance/reflectance of a thin-film stack. </p>
+           <p>The current film stack is an example of a distributed Bragg Reflector (DBM)</p>
+           <p><strong>It is strongly recommended that you use Chrome for this!</strong></p>
            <a href="https://github.com/rtreharne/MLM">https://github.com/rtreharne/MLM</a>
            </br></br>
            <a href="library/">Library</a>
+           <br/> 
+           <br/> 
+           <div style="display: inline-block;">
+               <form id="frmDownT" onsubmit="return downloadT();">
+                   <button type="submit">Download T</button>
+               </form>
+           </div>
+           <div style="display: inline-block;">
+               <form id="frmDownR" onsubmit="return downloadR();">
+                   <button type="submit">Download R</button>
+               </form>
+           </div>
            <div id="plot"></div>
+     	   <div id="sliderAngleLabel" class="slider">
+                <h3>Angle</h3>
+	       </div>
+	       <div id="sliderAngle"></div>
+           <div>
+           <br />
+           <br />
      	   <div id="sliderLabel" class="slider">
 	       </div>
 	       <div id="slider1">
-			   Click on film in table below to initiate slider.</div>
+			   Click on film in table below to initiate thickness slider.</div>
            <div>
 		   </br></br>
 	       <h3>Structure</h3>
